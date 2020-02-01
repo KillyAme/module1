@@ -10,7 +10,7 @@ public class CachingKeyPackingDateWizard extends SimpleDateWizard {
 
     @Override
     public LocalDate getDateOfYear(int year, int day) {
-        return cache.computeIfAbsent(key(year, day), key -> super.getDateOfYear(getYear(key), getDay(key)));
+        return cache.computeIfAbsent(key(year, day), key -> super.getDateOfYear(year, day));
     }
 
     private static long key(int year, int day) {
@@ -18,14 +18,6 @@ public class CachingKeyPackingDateWizard extends SimpleDateWizard {
         key <<= 32;
         key |= (day & 0xffffffffL);
         return key;
-    }
-
-    private static int getDay(long key) {
-        return (int) (key); // last 32 bits
-    }
-
-    private static int getYear(long key) {
-        return (int) (key >> 32); // first 32 bits
     }
 
 }
